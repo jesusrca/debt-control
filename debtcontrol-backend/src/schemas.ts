@@ -5,11 +5,11 @@ export const createDebtTemplateSchema = z.object({
   amount: z.number().positive(),
   interest_rate: z.number().min(0).max(100).optional().default(0),
   frequency: z.enum(['weekly', 'monthly', 'annual']),
-  due_day: z.number().int().min(1).max(31).optional(),
-  due_weekday: z.number().int().min(0).max(6).optional(),
-  category_id: z.string().uuid().optional(),
-  bank_account_id: z.string().uuid().optional(),
-  notes: z.string().max(1000).optional(),
+  due_day: z.number().int().min(1).max(31).optional().nullable(),
+  due_weekday: z.number().int().min(0).max(6).optional().nullable(),
+  category_id: z.string().uuid().optional().nullable(),
+  bank_account_id: z.string().uuid().optional().nullable(),
+  notes: z.string().max(1000).optional().nullable(),
 });
 
 export const updateDebtTemplateSchema = z.object({
@@ -42,7 +42,7 @@ export const createTransactionSchema = z.object({
   amount: z.number().positive(),
   date: z.string(),
   bank_account_id: z.string().uuid().optional().nullable(),
-  notes: z.string().max(500).optional(),
+  notes: z.string().max(500).optional().nullable(),
 });
 
 export const createBankAccountSchema = z.object({

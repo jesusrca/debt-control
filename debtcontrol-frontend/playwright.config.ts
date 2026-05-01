@@ -14,12 +14,12 @@ export default defineConfig({
   },
   projects: [
     {
-      name: 'Mobile Chrome',
-      use: { ...devices['iPhone 13'] },
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 13 Safari'] },
+      name: 'Mobile Chrome',
+      use: { ...devices['iPhone 13'] },
     },
   ],
   webServer: {
