@@ -1,0 +1,81 @@
+{
+  "project": "debtcontrol-frontend",
+  "stack": "React 19 + Vite 8 + TypeScript + Tailwind CSS v4 + Zustand + React Router v7",
+  "phases": {
+    "p10": {
+      "name": "Frontend Setup",
+      "tasks": [
+        { "id": "p10-t5", "name": "Configurar vite-plugin-pwa (manifest, service worker)", "status": "completed" }
+      ]
+    },
+    "p11": {
+      "name": "Base UI Components",
+      "tasks": [
+        { "id": "p11-t4", "name": "Select.tsx — custom select component", "status": "completed" },
+        { "id": "p11-t6", "name": "Toggle.tsx — for dark mode", "status": "completed" },
+        { "id": "p11-t8", "name": "Skeleton.tsx — loading placeholder", "status": "completed" },
+        { "id": "p11-t9", "name": "EmptyState.tsx — icon + message + CTA button", "status": "completed" },
+        { "id": "p11-t10", "name": "Spinner.tsx — loading indicator", "status": "completed" }
+      ]
+    },
+    "p12": {
+      "name": "Shared Components",
+      "tasks": [
+        { "id": "p12-t4", "name": "TransactionItem.tsx — date, bank badge (color), amount, debt link", "status": "completed" },
+        { "id": "p12-t5", "name": "StatCard.tsx — icon + label + value + trend indicator", "status": "completed" }
+      ]
+    },
+    "p14": {
+      "name": "Zustand Store",
+      "tasks": [
+        { "id": "p14-t8", "name": "Optimistic updates para pagos y creación", "status": "completed" },
+        { "id": "p14-t9", "name": "Cache invalidation logic", "status": "completed" }
+      ]
+    },
+    "p16": {
+      "name": "Page Debts",
+      "tasks": [
+        { "id": "p16-t8", "name": "Swipe gesture (opcional): swipe left → mark as paid", "status": "completed" }
+      ]
+    },
+    "p17": {
+      "name": "Page Transactions",
+      "tasks": [
+        { "id": "p17-t8", "name": "Pagination (load more button)", "status": "completed" }
+      ]
+    },
+    "p20": {
+      "name": "Page Upload Detail",
+      "tasks": [
+        { "id": "p20-t8", "name": "Crear nueva deuda inline form (simplified)", "status": "completed" }
+      ]
+    },
+    "p22": {
+      "name": "Routing & Layout",
+      "tasks": [
+        { "id": "p22-t4", "name": "Protected routes (redirect si API no responde — opcional)", "status": "completed" },
+        { "id": "p22-t5", "name": "Scroll to top on route change", "status": "completed" }
+      ]
+    },
+    "p25": {
+      "name": "PWA/Offline",
+      "tasks": [
+        { "id": "p25-t4", "name": "Queue mutations when offline (localStorage queue)", "status": "completed" },
+        { "id": "p25-t5", "name": "Sync queue when online (navigator.onLine events)", "status": "completed" }
+      ]
+    }
+  },
+  "summary": {
+    "totalTasks": 15,
+    "completedTasks": 15,
+    "completedComponents": [
+      "src/components/shared/TransactionItem.tsx",
+      "src/components/shared/StatCard.tsx",
+      "src/pages/DebtsPage.tsx (swipe gesture)",
+      "src/pages/TransactionsPage.tsx (pagination)",
+      "src/pages/UploadDetailPage.tsx (inline debt form)",
+      "src/App.tsx (protected routes, scroll to top)",
+      "src/store/index.ts (optimistic updates, offline queue)"
+    ]
+  }
+}

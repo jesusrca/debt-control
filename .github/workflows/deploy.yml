@@ -1,0 +1,106 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'debtcontrol-backend/**'
+      - 'debtcontrol-frontend/**'
+  workflow_dispatch:
+
+jobs:
+  deploy-backend:
+    name: Deploy Backend
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        working-directory: debtcontrol-backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          script: |
+            set -e
+
+            echo "=== Deploying DebtControl Backend ==="
+
+            # Navigate to app directory
+            cd /opt/debtcontrol/backend
+
+            # Pull latest code
+            git pull origin main
+
+            # Install dependencies
+            npm ci --only=production
+
+            # Build TypeScript
+            npm run build
+
+            # Restart PM2
+            pm2 restart debtcontrol-backend || pm2 start ecosystem.config.js --env production
+            pm2 save
+
+            # Health check
+            sleep 3
+            curl -f http://localhost:3001/api/health || exit 1
+
+            echo "=== Backend Deployed Successfully ==="
+
+  deploy-frontend:
+    name: Deploy Frontend
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        working-directory: debtcontrol-frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          script: |
+            set -e
+
+            echo "=== Deploying DebtControl Frontend ==="
+
+            # Navigate to app directory
+            cd /opt/debtcontrol/frontend
+
+            # Pull latest code
+            git pull origin main
+
+            # Install dependencies
+            npm ci
+
+            # Build
+            npm run build
+
+            # Copy to nginx directory
+            sudo cp -r dist/* /var/www/debtcontrol/frontend/dist/
+
+            echo "=== Frontend Deployed Successfully ==="
+
+  deploy-complete:
+    name: Deployment Complete
+    runs-on: ubuntu-latest
+    needs: [deploy-backend, deploy-frontend]
+
+    steps:
+      - name: Deployment Summary
+        run: |
+          echo "=== DebtControl Deployment Complete ==="
+          echo "Frontend: https://debtcontrol.example.com"
+          echo "Backend API: https://debtcontrol.example.com/api"
+          echo "Health Check: https://debtcontrol.example.com/api/health"
